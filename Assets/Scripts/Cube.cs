@@ -12,7 +12,17 @@ public class Cube : MonoBehaviour
     private bool _isColorChanged;
 
     public Action<Cube> Removed;
-    
+
+    private void OnCollisionEnter(Collision other)
+    {
+        if (other.gameObject.TryGetComponent(out Platform platform) && _isColorChanged == false)
+        {
+            _isColorChanged = true;
+            _colorRandomizer.Set();
+            StartLifeTime();
+        }
+    }
+
     private void StartLifeTime()
     {
         float time = Random.Range(_minLifeTime, _maxLifeTime + 1);
@@ -26,16 +36,6 @@ public class Cube : MonoBehaviour
         Removed?.Invoke(this);
     }
 
-    private void OnCollisionEnter(Collision other)
-    {
-        if (other.gameObject.TryGetComponent(out Platform platform) && _isColorChanged == false)
-        {
-            _isColorChanged = true;
-            _colorRandomizer.Set();
-            StartLifeTime();
-        }
-    }
-    
     private void ResetParameters()
     {
         _colorRandomizer.Restore();

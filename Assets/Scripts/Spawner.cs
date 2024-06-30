@@ -1,12 +1,11 @@
-using System;
 using UnityEngine;
 using UnityEngine.Pool;
-using Random = UnityEngine.Random;
+using UnityEngine.Serialization;
 
 public class Spawner : MonoBehaviour
 {
     [SerializeField] private Cube _prefab;
-    [SerializeField] private SpawnPosition _spawnPosition;
+    [FormerlySerializedAs("_spawnPosition")] [SerializeField] private SpawnZone spawnZone;
     [Space]
     [SerializeField] private int _poolCapacity;
     [SerializeField] private int _poolMaxSize;
@@ -45,28 +44,10 @@ public class Spawner : MonoBehaviour
     
     private void ActionOnGet(Cube cube)
     {
-        cube.transform.position = _spawnPosition.GetPosition();
+        cube.transform.position = spawnZone.GetPosition();
         cube.transform.rotation = Quaternion.identity;
         cube.GetComponent<Rigidbody>().velocity = Vector3.zero;
         
         cube.gameObject.SetActive(true);
-    }
-    
-    [Serializable]
-    private class SpawnPosition
-    {
-        [SerializeField] private float _maxPositionX;
-        [SerializeField] private float _minPositionX;
-        [SerializeField] private float _maxPositionZ;
-        [SerializeField] private float _minPositionZ;
-        [SerializeField] private float _positionY;
-
-        public Vector3 GetPosition()
-        {
-            var positionX = Random.Range(_minPositionX, _maxPositionX + 1);
-            var positionZ = Random.Range(_minPositionZ, _maxPositionZ + 1);
-            
-            return new Vector3(positionX, _positionY, positionZ);
-        }
     }
 }
