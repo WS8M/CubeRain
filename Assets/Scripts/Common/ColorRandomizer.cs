@@ -1,14 +1,13 @@
 using UnityEngine;
 
-[RequireComponent(typeof(MeshRenderer))]
-public class ColorRandomizer : MonoBehaviour
+public class ColorRandomizer
 {
     private MeshRenderer _meshRenderer;
     private Color _defaultColor;
 
-    private void Awake()
+    public  ColorRandomizer(MeshRenderer meshRenderer)
     {
-        _meshRenderer = gameObject.GetComponent<MeshRenderer>();
+        _meshRenderer = meshRenderer;
         _defaultColor = _meshRenderer.material.color;
     }
 
